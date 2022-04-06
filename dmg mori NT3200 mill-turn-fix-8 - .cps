@@ -1620,6 +1620,7 @@ function onSection() {
     previousABC = abc;
     forceWorkPlane();
     cancelTransformation();
+    
   } else {
     if (machineState.isTurningOperation || machineState.axialCenterDrilling) {
       writeBlock(conditional(gotBAxis, gMotionModal.format(0), bOutput.format(getB(abc, currentSection))));
