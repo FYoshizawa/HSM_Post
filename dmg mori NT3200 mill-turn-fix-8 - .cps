@@ -28,7 +28,7 @@ vendor = "DMG MORI";
 vendorUrl = "http://www.dmgmori.com";
 legal = "Copyright (C) 2012-2019 by Autodesk, Inc.";
 certificationLevel = 2;
-minimumRevision = 40783;
+minimumRevision = 40786;
 
 longDescription = "DMG Mori NLX post with support for mill-turn and a CELOS control with MAPPS.";
 
@@ -50,7 +50,7 @@ allowSpiralMoves = false;
 highFeedrate = (unit == IN) ? 470 : 12000;
 
 
-// user-defined properties
+// user-defined properties 
 properties = {
   writeMachine: true, // @ write machine 2020-9-24
   writeTools: true, // @ writes the tools
@@ -62,7 +62,7 @@ properties = {
   optionalStop: true, // optional stop
   separateWordsWithSpace: true, // specifies that the words should be separated with a white space
   useRadius: false, // specifies that arcs should be output using the radius (R word) instead of the I, J, and K words.
-  maximumSpindleSpeed: 6000, // @ specifies the maximum spindle speed
+  maximumSpindleSpeed: 4000, // @ specifies the maximum spindle speed 6000->4000
   useParametricFeed: false, // specifies that feed should be output using Q values
   showNotes: false, // specifies that operation notes should be output.
   useCycles: true, //@ specifies that drilling cycles should be used.
@@ -70,7 +70,7 @@ properties = {
   autoEject: false, // specifies if the part should be automatically ejected at end of program
   useTailStock: false, // specifies to use the tailstock or not
   gotChipConveyor: false, // specifies to use a chip conveyor Y/N
-  useG28Zhome: true, // use G28 to move Z to its home position
+  useG28Zhome: true, // @ use G28 to move Z to its home position
   zHomePosition: 0, // home position for Z when useG28Zhome is false
   transferType: "Phase", // Phase, Speed, or Stop synchronization for stock-transfer
   optimizeCaxisSelect: false, // optimize output of enable/disable C-axis codes
@@ -1281,7 +1281,8 @@ function onSection() {
     
     if (comment) {
       //comment += "T" + toolFormat.format(tool.number) ;
-      comment = "T" + toolFormat.format(tool.number) + " " + spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
+
+      comment = "T" + toolFormat.format(tool.number) + "  " + spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
       //comment = spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
       if (insertToolCall && properties.sequenceNumberToolOnly) {
         writeCommentSeqno(comment);
@@ -1484,7 +1485,7 @@ function onSection() {
       error(localize("Compensation offset is out of range."));
       return;
     }
-
+     
     if (tool.number > properties.maxTool) {
       warning(localize("Tool number exceeds maximum value."));
     }
@@ -1500,7 +1501,7 @@ function onSection() {
     writeBlock("T10" + toolFormat.format(tool.number  )  );
     
         if (tool.comment) {
-      writeComment(tool.comment);
+      writeComment(tool.comment + "  ");  // @
     }
    
    
@@ -1687,7 +1688,7 @@ function onSection() {
   previousSpindle = tempSpindle;
   activeSpindle = tempSpindle;
 
-  if (false) { // DEBUG
+  if (false) { //  DEBUG
     for (var key in machineState) {
       writeComment(key + " : " + machineState[key]);
     }
