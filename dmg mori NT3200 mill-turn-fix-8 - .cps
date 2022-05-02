@@ -1286,7 +1286,8 @@ function onSection() {
     if (comment) {
       //comment += "T" + toolFormat.format(tool.number) ;
 
-      // @@ 2022-4-21 
+      // @@ 2022-4-21 ni
+       
 
         if(spatialFormat.format(tool.diameter) == 0){
           comment = "T" + toolFormat.format(tool.number) + "  " + 
