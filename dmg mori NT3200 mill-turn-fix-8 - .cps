@@ -645,7 +645,11 @@ function onOpen() {
         //var comment = "T" + toolFormat.format(tool.number  + compensationOffset % 100) + " " +
         var comment = "T" + toolFormat.format(tool.number) + " " +
           "D=" + spatialFormat.format(tool.diameter) + " " +
-          localize("CR") + "=" + spatialFormat.format(tool.cornerRadius);
+         // localize("CR") + "=" + spatialFormat.format(tool.cornerRadius);
+
+         localize("ANGLE") + "=" + spatialFormat.format(tool.cornerRadius); 
+         //localize("ANGLE") + "=" + spatialFormat.format(tool.angle);
+
         if ((tool.taperAngle > 0) && (tool.taperAngle < Math.PI)) {
          
           comment += " " + localize("TAPER") + "=" + taperFormat.format(tool.taperAngle) + localize("deg");
@@ -1282,8 +1286,23 @@ function onSection() {
     if (comment) {
       //comment += "T" + toolFormat.format(tool.number) ;
 
-      comment = "T" + toolFormat.format(tool.number) + "  " + spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
+      // @@ 2022-4-21 
+
+        if(spatialFormat.format(tool.diameter) == 0){
+          comment = "T" + toolFormat.format(tool.number) + "  " + 
+          getToolTypeName(tool.type);
+
+        }
+        else{
+          comment = "T" + toolFormat.format(tool.number) + "  " + 
+          spatialFormat.format(tool.diameter) + "mm" + " "  +
+          getToolTypeName(tool.type);
+        }
+
+
+
       //comment = spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
+
       if (insertToolCall && properties.sequenceNumberToolOnly) {
         writeCommentSeqno(comment);
       } else {
@@ -1573,7 +1592,7 @@ function onSection() {
     }
   }
 
-  // Output spindle codes
+  // Output spindle codes 
   if (newSpindle) {
     // select spindle if required
   }
@@ -1620,7 +1639,7 @@ function onSection() {
     previousABC = abc;
     forceWorkPlane();
     cancelTransformation();
-    
+
   } else {
     if (machineState.isTurningOperation || machineState.axialCenterDrilling) {
       writeBlock(conditional(gotBAxis, gMotionModal.format(0), bOutput.format(getB(abc, currentSection))));
