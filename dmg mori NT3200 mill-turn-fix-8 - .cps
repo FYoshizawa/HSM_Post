@@ -572,11 +572,11 @@ function onOpen() {
       return;
     }
     var oFormat = createFormat({width:4, zeropad:true, decimals:0});
-    if (programComment) {
-      writeln("O" + oFormat.format(programId) + " (" + filterText(String(programComment).toUpperCase(), permittedCommentChars) + ")");
-    } else {
-      writeln("O" + oFormat.format(programId));
-    }
+    //if (programComment) {
+    //  writeln("O" + oFormat.format(programId) + " (" + filterText(String(programComment).toUpperCase(), permittedCommentChars) + ")");
+    //} else {
+    //  writeln("O" + oFormat.format(programId));
+   // }
   } else {
     error(localize("Program name has not been specified."));
     return;
@@ -644,6 +644,7 @@ function onOpen() {
         var compensationOffset = tool.isTurningTool() ? tool.compensationOffset : tool.lengthOffset;
         //var comment = "T" + toolFormat.format(tool.number  + compensationOffset % 100) + " " +
         var comment = "T" + toolFormat.format(tool.number) + " " +
+          "H" + toolFormat.format(tool.number) + " " +   //@ 2022/7/11 成功した
           "D=" + spatialFormat.format(tool.diameter) + " " +
          // localize("CR") + "=" + spatialFormat.format(tool.cornerRadius);
 
@@ -1286,21 +1287,21 @@ function onSection() {
     if (comment) {
       //comment += "T" + toolFormat.format(tool.number) ;
 
-      // @@ 2022-4-21 ni
-       
+      // @@ 2022-4-21 変更 ドリル以外は、工具径をコメントしない
+       // 0.0mm などと表示されてしまうために修正をした。
 
         if(spatialFormat.format(tool.diameter) == 0){
-          comment = "T" + toolFormat.format(tool.number) + "  " + 
+          comment = "T" + toolFormat.format(tool.number) + " " + 
+          "H" + toolFormat.format(tool.number) + " " +  //@ 2022-7-11
           getToolTypeName(tool.type);
 
         }
         else{
-          comment = "T" + toolFormat.format(tool.number) + "  " + 
+          comment = "T" + toolFormat.format(tool.number) + " " + 
+          "H" + toolFormat.format(tool.number) + " " +  //@ 2022-7-11
           spatialFormat.format(tool.diameter) + "mm" + " "  +
           getToolTypeName(tool.type);
         }
-
-
 
       //comment = spatialFormat.format(tool.diameter) + "mm " + getToolTypeName(tool.type);
 
